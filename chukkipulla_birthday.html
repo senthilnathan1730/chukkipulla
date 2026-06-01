@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Chukki ✨</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Space+Mono:ital@0;1&family=Cinzel+Decorative:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap"
+    rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <style>
+    :root {
+      --void: #03000a;
+      --deep: #07001a;
+      --cosmos: #0d0026;
+      --nebula: #1a003d;
+      --violet: #3d0080;
+      --purple: #7c3aed;
+      --aurora: #a855f7;
+      --magenta: #d946ef;
+      --pink: #f472b6;
+      --rose: #fb7185;
+      --gold: #fbbf24;
+      --ice: #bae6fd;
+      --cyan: #22d3ee;
+      --stardust: rgba(255, 255, 255, 0.06);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: hidden
+    }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: var(--void);
+      color: #fff;
+      overflow-x: hidden;
+      cursor: none
+    }
+
+    /* ── CURSOR ── */
+    #cur {
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99999;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: exclusion;
+      transition: transform .08s, width .2s, height .2s
+    }
+
+    #cur-ring {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(244, 114, 182, .5);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 99998;
+      transform: translate(-50%, -50%);
+      transition: all .22s cubic-bezier(.25, .46, .45, .94)
+    }
+
+    body:hover #cur-ring {
+      opacity: 1
+    }
+
+    a:hover~#cur-ring,
+    .btn:hover~#cur-ring {
+      transform: translate(-50%, -50%) scale(2) !important
+    }
+
+    /* ── LOADER ── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 999999;
+      background: var(--void);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      transition: opacity .8s ease, transform .8s ease
+    }
+
+    #loader.gone {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(1.05)
+    }
+
+    .ldr-orbit {
+      width: 80px;
+      height: 80px;
+      position: relative
+    }
+
+    .ldr-orbit::before,
+    .ldr-orbit::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid transparent;
+      animation: ldrSpin 1.4s linear infinite
+    }
+
+    .ldr-orbit::before {
+      border-top-color: var(--pink);
+      border-right-color: var(--purple);
+      animation-duration: 1s
+    }
+
+    .ldr-orbit::after {
+      inset: 10px;
+      border-top-color: var(--gold);
+      animation-direction: reverse;
+      animation-duration: 1.6s
+    }
+
+    .ldr-dot {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .ldr-dot::after {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, #fff, var(--pink));
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--pink)
+    }
+
+    @keyframes ldrSpin {
+      to {
+        transform: rotate(360deg)
+      }
+    }
+
+    .ldr-word {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(.9rem, 3vw, 1.2rem);
+      letter-spacing: 6px;
+      background: linear-gradient(90deg, var(--pink), var(--aurora), var(--gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center
+    }
+
+    .ldr-bar {
+      width: 180px;
+      height: 1px;
+      background: rgba(255, 255, 255, .08);
+      overflow: hidden;
+      border-radius: 2px
+    }
+
+    .ldr-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), var(--pink), var(--gold));
+      animation: ldrLoad 2.8s ease forwards
+    }
+
+    @keyframes ldrLoad {
+      to {
+        width: 100%
+      }
+    }
+
+    /* ── CANVAS LAYERS ── */
+    #space-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none
+    }
+
+    #depth-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none
+    }
+
+    #particle-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none
+    }
+
+    /* ── SPACE STATION SVG LAYER ── */
+    #station-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden
+    }
+
+    .space-station {
+      position: absolute;
+      transform-origin: center center;
+      animation: stationOrbit 28s linear infinite
+    }
+
+    .space-station.s2 {
+      animation-duration: 38s;
+      animation-direction: reverse;
+      animation-delay: -14s
+    }
+
+    .space-station.s3 {
+      animation-duration: 52s;
+      animation-delay: -8s
+    }
+
+    @keyframes stationOrbit {
+      from {
+        transform: rotate(0deg) translateX(0) rotate(0deg)
+      }
+
+      to {
+        transform: rotate(360deg) translateX(0) rotate(-360deg)
+      }
+    }
+
+    /* ── NOISE ── */
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: .025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E")
+    }
+
+    /* ── CONTENT WRAPPER ── */
+    #content {
+      position: relative;
+      z-index: 10
+    }
+
+    /* ── HERO ── */
+    .hero {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden
+    }
+
+    .cine-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: clamp(40px, 7vh, 70px);
+      background: var(--void);
+      z-index: 20
+    }
+
+    .cine-bar.t {
+      top: 0
+    }
+
+    .cine-bar.b {
+      bottom: 0
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(ellipse 100% 80% at 50% 60%, rgba(124, 58, 237, .2) 0%, transparent 55%),
+        radial-gradient(ellipse 60% 50% at 20% 40%, rgba(244, 114, 182, .15) 0%, transparent 50%),
+        radial-gradient(ellipse 50% 60% at 80% 30%, rgba(34, 211, 238, .1) 0%, transparent 50%)
+    }
+
+    .hero-inner {
+      text-align: center;
+      position: relative;
+      z-index: 10;
+      padding: 2rem
+    }
+
+    /* Eyebrow */
+    .eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(.6rem, 1.4vw, .78rem);
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: white;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      transform: translateY(20px)
+    }
+
+    /* Main title */
+    .hero-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 9vw, 7.5rem);
+      line-height: 1.05;
+      letter-spacing: -.01em;
+      opacity: 0;
+      transform: translateY(70px) skewY(2deg)
+    }
+
+    .hero-title .line1 {
+      display: block;
+      background: linear-gradient(135deg, #fff 0%, #f9a8d4 40%, #c084fc 70%, #93c5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 60px rgba(168, 85, 247, .35));
+      animation: titleGlow 3s ease-in-out infinite
+    }
+
+    /* Name */
+    .hero-name {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(2rem, 7vw, 6rem);
+      font-weight: 400;
+      color: var(--gold);
+      filter: drop-shadow(0 0 30px rgba(251, 191, 36, .5)) drop-shadow(0 0 80px rgba(251, 191, 36, .2));
+      opacity: 0;
+      transform: translateY(40px);
+      margin-top: .4rem;
+      animation: nameGlow 2.5s ease-in-out infinite
+    }
+
+    /* Date */
+    .hero-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(.65rem, 1.5vw, .85rem);
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: white;
+      margin-top: 2.5rem;
+      opacity: 0
+    }
+
+    /* Orbital rings decoration */
+    .orbit-deco {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      width: clamp(300px, 70vw, 700px);
+      height: clamp(300px, 70vw, 700px)
+    }
+
+    .o-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 85, 247, .08);
+      animation: orbitPulse ease-in-out infinite
+    }
+
+    .o-ring:nth-child(2) {
+      inset: -40px;
+      border-color: rgba(244, 114, 182, .06);
+      animation-duration: 14s;
+      animation-delay: 3s
+    }
+
+    .o-ring:nth-child(3) {
+      inset: -90px;
+      border-color: rgba(34, 211, 238, .05);
+      animation-duration: 20s;
+      animation-delay: 6s
+    }
+
+    @keyframes orbitPulse {
+
+      0%,
+      100% {
+        opacity: .5;
+        transform: rotate(0) scale(1)
+      }
+
+      50% {
+        opacity: 1;
+        transform: rotate(180deg) scale(1.02)
+      }
+    }
+
+    @keyframes titleGlow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 40px rgba(168, 85, 247, .4)) drop-shadow(0 0 80px rgba(244, 114, 182, .2))
+      }
+
+      33% {
+        filter: drop-shadow(0 0 70px rgba(244, 114, 182, .8)) drop-shadow(0 0 120px rgba(251, 191, 36, .3)) drop-shadow(0 0 20px rgba(255, 255, 255, .6))
+      }
+
+      66% {
+        filter: drop-shadow(0 0 55px rgba(34, 211, 238, .6)) drop-shadow(0 0 100px rgba(168, 85, 247, .4)) drop-shadow(0 0 15px rgba(255, 255, 255, .4))
+      }
+    }
+
+    @keyframes nameGlow {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 30px rgba(251, 191, 36, .5)) drop-shadow(0 0 80px rgba(251, 191, 36, .2))
+      }
+
+      50% {
+        filter: drop-shadow(0 0 60px rgba(251, 191, 36, 1)) drop-shadow(0 0 120px rgba(244, 114, 182, .5)) drop-shadow(0 0 8px rgba(255, 255, 255, .9))
+      }
+    }
+
+    /* Scroll hint */
+    .scroll-hint {
+      position: absolute;
+      bottom: clamp(55px, 10vh, 90px);
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 15;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .6rem;
+      opacity: 0
+    }
+
+    .sh-text {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: white
+    }
+
+    .sh-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(180deg, transparent, var(--pink), transparent);
+      animation: shPulse 2.2s ease-in-out infinite
+    }
+
+    @keyframes shPulse {
+
+      0%,
+      100% {
+        opacity: .3;
+        transform: scaleY(1)
+      }
+
+      50% {
+        opacity: 1;
+        transform: scaleY(1.3)
+      }
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      position: relative;
+      z-index: 10;
+      padding: clamp(5rem, 10vw, 10rem) clamp(1.5rem, 6vw, 5rem)
+    }
+
+    .section-cap {
+      font-family: 'Space Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--pink);
+      display: block;
+      margin-bottom: 1.2rem
+    }
+
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 400;
+      font-size: clamp(1.6rem, 4vw, 3.2rem);
+      line-height: 1.15;
+      background: linear-gradient(135deg, #fff, #e879f9, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    .section-rule {
+      width: 50px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--pink), transparent);
+      margin: 1.5rem 0 3rem
+    }
+
+    .center .section-rule {
+      margin-left: auto;
+      margin-right: auto
+    }
+
+    /* ── AMBIENT ORBS ── */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      animation: orbDrift ease-in-out infinite
+    }
+
+    @keyframes orbDrift {
+
+      0%,
+      100% {
+        transform: translate(0, 0)
+      }
+
+      40% {
+        transform: translate(40px, -50px)
+      }
+
+      70% {
+        transform: translate(-25px, 30px)
+      }
+    }
+
+    /* ── GALLERY ── */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: clamp(1rem, 3vw, 2.5rem);
+      max-width: 860px;
+      margin: 0 auto
+    }
+
+    .pframe {
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      transform-style: preserve-3d;
+      transition: transform .6s cubic-bezier(.23, 1, .32, 1), box-shadow .6s
+    }
+
+    .pframe::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, var(--pink), var(--purple), var(--cyan));
+      z-index: -1;
+      opacity: 0;
+      transition: opacity .5s
+    }
+
+    .pframe:hover::before {
+      opacity: 1
+    }
+
+    .pframe:hover {
+      transform: translateY(-22px) scale(1.03) !important;
+      box-shadow: 0 40px 100px rgba(244, 114, 182, .3), 0 0 80px rgba(124, 58, 237, .2)
+    }
+
+    .pframe:nth-child(1) {
+      transform: rotate(-2.8deg) translateY(14px)
+    }
+
+    .pframe:nth-child(2) {
+      transform: rotate(2.8deg) translateY(-14px)
+    }
+
+    .pinner {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--nebula), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden
+    }
+
+    .pinner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform .6s cubic-bezier(.23, 1, .32, 1)
+    }
+
+    .pframe:hover .pinner img {
+      transform: scale(1.07)
+    }
+
+    .poverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(3, 0, 10, .9) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 1.6rem
+    }
+
+    .pcap {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      color: #fff;
+      text-shadow: 0 2px 20px rgba(0, 0, 0, .8)
+    }
+
+    .pglow {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(244, 114, 182, .22), transparent 65%);
+      transition: opacity .4s
+    }
+
+    .pframe:hover .pglow {
+      opacity: 1
+    }
+
+    /* holographic shimmer */
+    .pframe::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .04) 50%, transparent 60%);
+      transform: translateX(-100%);
+      transition: transform .8s
+    }
+
+    .pframe:hover::after {
+      transform: translateX(100%)
+    }
+
+    /* ── WISH CARDS ── */
+    .wishes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto
+    }
+
+    .wcard {
+      background: rgba(255, 255, 255, .025);
+      backdrop-filter: blur(40px);
+      border: 1px solid rgba(244, 114, 182, .12);
+      border-radius: 28px;
+      padding: 2.5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all .55s cubic-bezier(.23, 1, .32, 1);
+      transform: translateY(0)
+    }
+
+    .wcard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--pink), var(--aurora), transparent);
+      opacity: .7
+    }
+
+    .wcard::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% -20%, rgba(244, 114, 182, .07), transparent 60%);
+      pointer-events: none
+    }
+
+    .wcard:hover {
+      transform: translateY(-12px);
+      border-color: rgba(244, 114, 182, .35);
+      background: rgba(255, 255, 255, .045);
+      box-shadow: 0 35px 80px rgba(244, 114, 182, .12), 0 0 0 1px rgba(244, 114, 182, .18), inset 0 1px 0 rgba(255, 255, 255, .06)
+    }
+
+    .wico {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 1.2rem;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 12px rgba(244, 114, 182, .4))
+    }
+
+    .wtitle {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.35rem;
+      color: var(--pink);
+      margin-bottom: .8rem;
+      position: relative;
+      z-index: 1
+    }
+
+    .wtext {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.9;
+      color: rgba(255, 255, 255, .5);
+      position: relative;
+      z-index: 1
+    }
+
+    /* ── COUNTDOWN ── */
+    .countdown-section {
+      text-align: center
+    }
+
+    .cd-row {
+      display: flex;
+      justify-content: center;
+      gap: clamp(.8rem, 2.5vw, 2rem);
+      flex-wrap: wrap;
+      margin-top: 3rem
+    }
+
+    .cd-block {
+      position: relative;
+      min-width: clamp(80px, 18vw, 120px);
+      padding: 2rem 1.5rem;
+      background: rgba(255, 255, 255, .025);
+      border: 1px solid rgba(168, 85, 247, .18);
+      border-radius: 22px;
+      backdrop-filter: blur(30px);
+      overflow: hidden;
+      transition: transform .4s, border-color .4s, box-shadow .4s
+    }
+
+    .cd-block:hover {
+      transform: translateY(-6px) scale(1.04);
+      border-color: rgba(168, 85, 247, .4);
+      box-shadow: 0 20px 60px rgba(168, 85, 247, .15)
+    }
+
+    .cd-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(168, 85, 247, .1), transparent 65%)
+    }
+
+    .cd-num {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.2rem, 6vw, 3.2rem);
+      font-weight: 400;
+      background: linear-gradient(135deg, #fff, var(--pink), var(--aurora));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      display: block;
+      line-height: 1;
+      position: relative;
+      z-index: 1;
+      transition: transform .2s
+    }
+
+    .cd-label {
+      font-family: 'Space Mono', monospace;
+      font-size: .6rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, .3);
+      margin-top: .5rem;
+      display: block;
+      position: relative;
+      z-index: 1
+    }
+
+    /* ── CAKE SECTION ── */
+    .cake-section {
+      text-align: center;
+      padding-left: clamp(1rem, 4vw, 3rem);
+      padding-right: clamp(1rem, 4vw, 3rem)
+    }
+
+    /* Stage */
+    #cake-stage {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      margin: 2rem auto 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Canvas — always visible */
+    #cake-canvas {
+      display: block;
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      margin: 0 auto;
+      filter: drop-shadow(0 0 60px rgba(251, 191, 36, .4)) drop-shadow(0 0 100px rgba(244, 114, 182, .2));
+      position: relative;
+      z-index: 1;
+      transition: transform .4s cubic-bezier(.23, 1, .32, 1), filter .4s;
+    }
+
+    #cake-canvas:hover {
+      transform: translateY(-10px) scale(1.02);
+      filter: drop-shadow(0 0 90px rgba(251, 191, 36, .6)) drop-shadow(0 0 140px rgba(244, 114, 182, .35));
+    }
+
+    /* Ambient glow under cake */
+    #cake-glow {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 220px;
+      height: 20px;
+      background: radial-gradient(ellipse, rgba(251, 191, 36, .5), rgba(244, 114, 182, .2) 50%, transparent 80%);
+      border-radius: 50%;
+      filter: blur(6px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Blow button — always visible and ready */
+    #blow-btn {
+      font-family: 'Space Mono', monospace;
+      font-size: .72rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 1rem 2.4rem;
+      cursor: pointer;
+      transition: transform .25s, box-shadow .3s, opacity .4s;
+      position: relative;
+      overflow: hidden;
+      margin-top: 1.8rem;
+    }
+
+    #blow-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 255, 255, .12);
+      opacity: 0;
+      transition: opacity .2s
+    }
+
+    #blow-btn:hover {
+      transform: translateY(-4px) scale(1.05);
+      box-shadow: 0 18px 50px rgba(244, 114, 182, .45)
+    }
+
+    #blow-btn:hover::after {
+      opacity: 1
+    }
+
+    #blow-btn:disabled {
+      opacity: .35;
+      cursor: not-allowed;
+      transform: none
+    }
+
+    /* Happy Birthday reveal */
+    #hb-reveal {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 7vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.2;
+      background: linear-gradient(135deg, #fff 0%, #fbbf24 35%, #f472b6 65%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+      opacity: 0;
+      transform: scale(.7) translateY(30px);
+      transition: opacity 1s ease, transform 1s cubic-bezier(.23, 1, .32, 1), text-shadow 1s ease;
+      margin-top: 2.5rem;
+      padding: 0 1rem;
+      filter: drop-shadow(0 0 30px rgba(251, 191, 36, .6));
+      pointer-events: none;
+      position: relative;
+    }
+
+    #hb-reveal::before {
+      content: '🎂 Happy Birthday Chukki! 🎂';
+      position: absolute;
+      inset: 0;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+      -webkit-text-fill-color: transparent;
+      background: inherit;
+      -webkit-background-clip: text;
+      background-clip: text;
+      filter: blur(12px) brightness(2);
+      opacity: 0;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    #hb-reveal.shown::before {
+      opacity: .7
+    }
+
+    #hb-reveal.shown {
+      opacity: 1;
+      /* transform: scale(1) translateY(0);
+      animation: hbPulse 3s ease-in-out infinite 1.2s; */
+    }
+
+    @keyframes hbPulse {
+
+      0%,
+      100% {
+        filter: drop-shadow(0 0 20px rgba(251, 191, 36, .5)) drop-shadow(0 0 50px rgba(244, 114, 182, .3)) drop-shadow(0 0 80px rgba(168, 85, 247, .2))
+      }
+
+      25% {
+        filter: drop-shadow(0 0 50px rgba(251, 191, 36, 1)) drop-shadow(0 0 90px rgba(244, 114, 182, .8)) drop-shadow(0 0 130px rgba(168, 85, 247, .5)) drop-shadow(0 0 8px rgba(255, 255, 255, .9))
+      }
+
+      50% {
+        filter: drop-shadow(0 0 30px rgba(244, 114, 182, .9)) drop-shadow(0 0 70px rgba(251, 191, 36, .5)) drop-shadow(0 0 110px rgba(34, 211, 238, .4))
+      }
+
+      75% {
+        filter: drop-shadow(0 0 45px rgba(168, 85, 247, .9)) drop-shadow(0 0 80px rgba(244, 114, 182, .6)) drop-shadow(0 0 120px rgba(251, 191, 36, .3)) drop-shadow(0 0 6px rgba(255, 255, 255, .7))
+      }
+    }
+
+    /* Stars burst around HB text */
+    .hb-star {
+      position: absolute;
+      font-size: 1.4rem;
+      opacity: 0;
+      animation: starPop .6s cubic-bezier(.23, 1, .32, 1) forwards;
+      pointer-events: none;
+    }
+
+    @keyframes starPop {
+      0% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg)
+      }
+
+      60% {
+        opacity: 1;
+        transform: scale(1.3) rotate(20deg)
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg)
+      }
+    }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none
+    }
+
+    /* Mobile fixes */
+    @media(max-width:480px) {
+      #cake-stage {
+        max-width: 98vw
+      }
+
+      #cake-canvas {
+        max-width: min(300px, 90vw)
+      }
+
+      #hb-reveal {
+        font-size: clamp(1.2rem, 8vw, 2rem)
+      }
+    }
+
+    /* ── BANNER ── */
+    .banner-section {
+      text-align: center;
+      padding: clamp(6rem, 12vw, 12rem) clamp(1.5rem, 5vw, 4rem);
+      position: relative;
+      overflow: hidden
+    }
+
+    .banner-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 50% 50%, rgba(124, 58, 237, .18), transparent 65%)
+    }
+
+    .banner-quote {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.6;
+      max-width: 820px;
+      margin: 0 auto 2rem;
+      color: rgba(255, 255, 255, .88);
+      position: relative;
+      z-index: 1
+    }
+
+    .banner-quote em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text
+    }
+
+    .banner-from {
+      font-family: 'Space Mono', monospace;
+      font-weight: 400;
+      font-size: .85rem;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, .3);
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1
+    }
+
+    .banner-from span {
+      color: var(--ice)
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      z-index: 10;
+      border-top: 1px solid rgba(255, 255, 255, .04)
+    }
+
+    footer p {
+      font-family: 'Space Mono', monospace;
+      font-size: .75rem;
+      color: rgba(255, 255, 255, .25);
+      letter-spacing: 2px
+    }
+
+    footer .fdate {
+      font-size: .65rem;
+      letter-spacing: 5px;
+      color: white;
+      margin-top: .8rem;
+      text-transform: uppercase
+    }
+
+    /* ── GLASS PANEL ── */
+    .glass {
+      background: rgba(255, 255, 255, .025);
+      backdrop-filter: blur(50px);
+      border: 1px solid rgba(255, 255, 255, .07);
+      border-radius: 32px;
+      padding: 3rem;
+      position: relative;
+      overflow: hidden
+    }
+
+    .glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 32px;
+      background: linear-gradient(135deg, rgba(244, 114, 182, .04), rgba(124, 58, 237, .04));
+      pointer-events: none
+    }
+
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(55px);
+      transition: opacity .95s cubic-bezier(.16, 1, .3, 1), transform .95s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .reveal.vis {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .rev-l {
+      opacity: 0;
+      transform: translateX(-65px);
+      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .rev-l.vis {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .rev-r {
+      opacity: 0;
+      transform: translateX(65px);
+      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .rev-r.vis {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .rev-s {
+      opacity: 0;
+      transform: scale(.92);
+      transition: opacity .9s cubic-bezier(.16, 1, .3, 1), transform .9s cubic-bezier(.16, 1, .3, 1)
+    }
+
+    .rev-s.vis {
+      opacity: 1;
+      transform: scale(1)
+    }
+
+    .d1 {
+      transition-delay: .1s
+    }
+
+    .d2 {
+      transition-delay: .2s
+    }
+
+    .d3 {
+      transition-delay: .3s
+    }
+
+    .d4 {
+      transition-delay: .4s
+    }
+
+    .d5 {
+      transition-delay: .5s
+    }
+
+    /* ── LENS FLARES ── */
+    .flare {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      pointer-events: none;
+      animation: flareDrift ease-in-out infinite
+    }
+
+    @keyframes flareDrift {
+
+      0%,
+      100% {
+        transform: translate(0, 0) scale(1);
+        opacity: .5
+      }
+
+      40% {
+        transform: translate(25px, -35px) scale(1.1);
+        opacity: .85
+      }
+
+      70% {
+        transform: translate(-18px, 20px) scale(.95);
+        opacity: .45
+      }
+    }
+
+    /* ── UFO ── */
+    .ufo {
+      position: fixed;
+      pointer-events: none;
+      z-index: 5;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      will-change: transform;
+      animation: ufoFly 15s ease-in-out infinite 2s
+    }
+
+    @keyframes ufoFly {
+      0% {
+        transform: translate(calc(50vw - 1.3rem), 110vh) scale(.7);
+        opacity: 0
+      }
+
+      7% {
+        opacity: 1;
+        transform: translate(calc(50vw - 1.3rem), 85vh) scale(.85)
+      }
+
+      20% {
+        transform: translate(calc(48vw - 1.3rem), 65vh) scale(1)
+      }
+
+      35% {
+        transform: translate(calc(52vw - 1.3rem), 45vh) scale(1.05)
+      }
+
+      50% {
+        transform: translate(calc(49vw - 1.3rem), 30vh) scale(1.1)
+      }
+
+      65% {
+        transform: translate(calc(51vw - 1.3rem), 18vh) scale(1.05)
+      }
+
+      80% {
+        transform: translate(calc(50vw - 1.3rem), 8vh) scale(.95);
+        opacity: 1
+      }
+
+      92% {
+        transform: translate(calc(50vw - 1.3rem), -8vh) scale(.7);
+        opacity: 0
+      }
+
+      100% {
+        transform: translate(calc(50vw - 1.3rem), -15vh) scale(.5);
+        opacity: 0
+      }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:600px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        max-width: 340px
+      }
+
+      .pframe:nth-child(1),
+      .pframe:nth-child(2) {
+        transform: none
+      }
+
+      .cd-row {
+        gap: .5rem
+      }
+
+      .cd-block {
+        min-width: 68px;
+        padding: 1.4rem .9rem
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <p class="ldr-word">Happy Birthday Chukki</p>
+    <div class="ldr-orbit">
+      <div class="ldr-dot"></div>
+    </div>
+    <div class="ldr-bar">
+      <div class="ldr-fill"></div>
+    </div>
+    <p class="section-title"
+      style="font-family:'Space Mono',monospace;font-size:.6rem;letter-spacing:6px;text-transform:uppercase;color:rgba(255,255,255,.2)">
+      A universe is crafted for you</p>
+  </div>
+
+  <div class="noise"></div>
+  <div id="cur"></div>
+  <div id="cur-ring"></div>
+
+  <!-- CANVAS LAYERS -->
+  <canvas id="space-canvas"></canvas>
+  <canvas id="depth-canvas"></canvas>
+  <canvas id="particle-canvas"></canvas>
+
+  <!-- SPACE STATION LAYER -->
+  <div id="station-layer"></div>
+
+  <!-- UFO -->
+  <div class="ufo" id="ufo1">🛸</div>
+
+  <div id="content">
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="cine-bar t" id="bar-top"></div>
+      <div class="cine-bar b" id="bar-bottom"></div>
+      <div class="hero-glow"></div>
+
+      <!-- Decorative flares -->
+      <div class="flare"
+        style="width:140px;height:140px;background:radial-gradient(circle,rgba(251,191,36,.22),transparent 70%);top:18%;left:12%;animation-duration:9s">
+      </div>
+      <div class="flare"
+        style="width:220px;height:220px;background:radial-gradient(circle,rgba(244,114,182,.14),transparent 70%);top:28%;right:8%;animation-duration:13s;animation-delay:3s">
+      </div>
+      <div class="flare"
+        style="width:90px;height:90px;background:radial-gradient(circle,rgba(34,211,238,.25),transparent 70%);bottom:28%;left:22%;animation-duration:8s;animation-delay:1.5s">
+      </div>
+
+      <!-- Orbital decoration -->
+      <div class="orbit-deco">
+        <div class="o-ring"></div>
+        <div class="o-ring"></div>
+        <div class="o-ring"></div>
+      </div>
+
+      <div class="hero-inner">
+        <p class="eyebrow" id="h-eye">✦ A Celestial Celebration ✦</p>
+        <h1 class="hero-title" id="h-title"><span class="line1">Happy Birthday</span></h1>
+        <span class="hero-name" id="h-name">Chukki ✨</span>
+        <p class="hero-meta" id="h-meta">June 07 · 2026</p>
+      </div>
+
+      <div class="scroll-hint" id="scroll-hint">
+        <span class="sh-text">Scroll</span>
+        <div class="sh-line"></div>
+      </div>
+    </section>
+
+    <!-- GALLERY -->
+    <section class="gallery-section">
+      <div class="orb"
+        style="width:700px;height:700px;background:rgba(124,58,237,.06);top:-120px;right:-250px;animation-duration:16s">
+      </div>
+      <div style="text-align:center;margin-bottom:4rem">
+        <span class="section-cap reveal">Gallery</span>
+        <h2 class="section-title reveal d1">The Birthday Princess</h2>
+        <div class="section-rule reveal d2" style="margin-left:auto;margin-right:auto"></div>
+      </div>
+      <div class="gallery-grid">
+        <div class="pframe rev-l d1">
+          <div class="pinner">
+            <img src="chukki2.png" alt="Birthday Girl"
+              onerror="this.parentElement.style.background='linear-gradient(135deg,#3d0080,#7c3aed)'">
+          </div>
+          <div class="pglow"></div>
+          <div class="poverlay"><span class="pcap">🌸 The Star of the Day</span></div>
+        </div>
+        <div class="pframe rev-r d2">
+          <div class="pinner">
+            <img src="chukki3.png" alt="Birthday Chukki"
+              onerror="this.parentElement.style.background='linear-gradient(135deg,#07001a,#d946ef)'">
+          </div>
+          <div class="pglow"></div>
+          <div class="poverlay"><span class="pcap">✨ Birthday Princess</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WISHES -->
+    <section>
+      <div class="orb"
+        style="width:500px;height:500px;background:rgba(244,114,182,.06);bottom:-80px;left:-180px;animation-duration:20s;animation-delay:5s">
+      </div>
+      <div style="text-align:center;margin-bottom:4rem">
+        <span class="section-cap reveal">Heartfelt Wishes</span>
+        <h2 class="section-title reveal d1">Birthday Wishes for You</h2>
+        <div class="section-rule reveal d2" style="margin-left:auto;margin-right:auto"></div>
+      </div>
+      <div class="wishes-grid">
+        <div class="wcard reveal d1">
+          <span class="wico">🦋</span>
+          <h3 class="wtitle">Free Like a Butterfly</h3>
+          <p class="wtext">May your life be as colorful and free as the butterflies that surround you — always soaring
+            to new heights with grace and wonder.</p>
+        </div>
+        <div class="wcard reveal d2">
+          <span class="wico">🌸</span>
+          <h3 class="wtitle">Bloom Always</h3>
+          <p class="wtext">Like flowers in a fairy garden, may you always bloom brightly and spread your fragrance
+            wherever you go, touching every heart.</p>
+        </div>
+        <div class="wcard reveal d3">
+          <span class="wico">✨</span>
+          <h3 class="wtitle">Sparkle & Shine</h3>
+          <p class="wtext">You are pure magic, dear Chukki. May your days be filled with sparkles, laughter, and endless
+            joy beyond imagination.</p>
+        </div>
+        <div class="wcard reveal d1">
+          <span class="wico">👑</span>
+          <h3 class="wtitle">Always a Princess</h3>
+          <p class="wtext">Wear your crown with pride! You are royalty — beautiful, strong, and endlessly loved by
+            everyone around you.</p>
+        </div>
+        <div class="wcard reveal d2">
+          <span class="wico">💕</span>
+          <h3 class="wtitle">With All My Love</h3>
+          <p class="wtext">From your brother's heart — You are the most beautiful blessing in my life. Happy Birthday,
+            my dear sister! 💖</p>
+        </div>
+        <div class="wcard reveal d3">
+          <span class="wico">🌟</span>
+          <h3 class="wtitle">Dream Big</h3>
+          <p class="wtext">The stars in the sky are not the limit — your dreams can take you even further. Believe in
+            your magic always!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section class="countdown-section">
+      <span class="section-cap reveal">Time Until the Big Day</span>
+      <h2 class="section-title reveal d1">Countdown to June 07</h2>
+      <div class="section-rule reveal d2" style="margin-left:auto;margin-right:auto"></div>
+      <p class="reveal d3"
+        style="font-family:'Space Mono',monospace;color:rgba(255,255,255,.25);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;margin-top:-.5rem">
+        2026 · The Special Day</p>
+      <div class="cd-row reveal d2" id="countdown">
+        <div class="cd-block"><span class="cd-num" id="cd-d">00</span><span class="cd-label">Days</span></div>
+        <div class="cd-block"><span class="cd-num" id="cd-h">00</span><span class="cd-label">Hours</span></div>
+        <div class="cd-block"><span class="cd-num" id="cd-m">00</span><span class="cd-label">Minutes</span></div>
+        <div class="cd-block"><span class="cd-num" id="cd-s">00</span><span class="cd-label">Seconds</span></div>
+      </div>
+    </section>
+
+    <!-- CAKE -->
+    <section class="cake-section">
+      <span class="section-cap reveal">Make a Wish</span>
+      <h2 class="section-title reveal d1">Blow Out the Candles</h2>
+
+      <div class="section-rule reveal d2" style="margin-left:auto;margin-right:auto"></div>
+
+      <div id="cake-stage">
+        <!-- Cake canvas — always visible -->
+        <canvas id="cake-canvas" width="340" height="400"></canvas>
+        <div id="cake-glow"></div>
+        <p class="reveal d3"
+          style="font-family:'Space Mono',monospace;color:white;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;margin-top:.5rem">
+          Click to Blow Out the Candles</p>
+
+        <!-- Blow button — ready to click -->
+        <button id="blow-btn">🕯️ &nbsp; Blow Out the Candles</button>
+
+        <!-- Happy Birthday message -->
+        <div id="hb-reveal">🎂 Happy Birthday Chukki! 🎂</div>
+      </div>
+    </section>
+    <canvas id="confetti-canvas"></canvas>
+
+
+    <!-- BANNER -->
+    <section class="banner-section">
+      <p class="banner-quote reveal">"Wishing you a day as <em>magical</em> as you are, Chukki 🎀"</p>
+      <p class="banner-from reveal d2">With love from <span>your brother 💙</span></p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>🦋 Made with ♥ for the most magical sister in the world 🦋</p>
+      <p class="fdate">Happy Birthday · June 07, 2026</p>
+    </footer>
+
+  </div><!-- /content -->
+
+  <script>
+    /* ══════════════════════════════════════════
+       1. CUSTOM CURSOR
+    ══════════════════════════════════════════ */
+    (function () {
+      const c = document.getElementById('cur'), r = document.getElementById('cur-ring');
+      let mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY });
+      const hovEls = document.querySelectorAll('a,button,.pframe,.wcard,.cd-block');
+      hovEls.forEach(el => {
+        el.addEventListener('mouseenter', () => { c.style.transform = 'translate(-50%,-50%) scale(2.5)'; r.style.transform = 'translate(-50%,-50%) scale(1.8)'; r.style.borderColor = 'rgba(244,114,182,.7)' });
+        el.addEventListener('mouseleave', () => { c.style.transform = 'translate(-50%,-50%) scale(1)'; r.style.transform = 'translate(-50%,-50%) scale(1)'; r.style.borderColor = 'rgba(244,114,182,.5)' });
+      });
+      function animCursor() {
+        c.style.left = mx + 'px'; c.style.top = my + 'px';
+        rx += (mx - rx) * .1; ry += (my - ry) * .1;
+        r.style.left = rx + 'px'; r.style.top = ry + 'px';
+        requestAnimationFrame(animCursor);
+      }
+      animCursor();
+    })();
+
+    /* ══════════════════════════════════════════
+       2. LOADER → PAGE REVEAL
+    ══════════════════════════════════════════ */
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const ldr = document.getElementById('loader');
+        ldr.classList.add('gone');
+        setTimeout(() => ldr.remove(), 900);
+        heroReveal();
+      }, 3000);
+    });
+
+    /* ══════════════════════════════════════════
+       3. HERO GSAP REVEAL
+    ══════════════════════════════════════════ */
+    function heroReveal() {
+      const tl = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      tl.to('#bar-top', { height: 0, duration: 1.2, ease: 'power3.inOut' })
+        .to('#bar-bottom', { height: 0, duration: 1.2, ease: 'power3.inOut' }, '-=1.2')
+        .to('#h-eye', { opacity: 1, y: 0, duration: 1 }, '-=.4')
+        .to('#h-title', { opacity: 1, y: 0, skewY: 0, duration: 1.2 }, '-=.6')
+        .to('#h-name', { opacity: 1, y: 0, duration: 1.1 }, '-=.7')
+        .to('#h-meta', { opacity: 1, duration: .9 }, '-=.5')
+        .to('#scroll-hint', { opacity: 1, duration: .7 }, '-=.3');
+    }
+
+    /* ══════════════════════════════════════════
+       4. SCROLL REVEAL OBSERVER
+    ══════════════════════════════════════════ */
+    (function () {
+      const els = document.querySelectorAll('.reveal,.rev-l,.rev-r,.rev-s');
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('vis'); obs.unobserve(e.target) } });
+      }, { threshold: .12 });
+      els.forEach(el => obs.observe(el));
+    })();
+
+    /* ══════════════════════════════════════════
+       5. COUNTDOWN TIMER
+    ══════════════════════════════════════════ */
+    (function () {
+      const target = new Date('2026-06-07T00:00:00');
+      function tick() {
+        const now = new Date(), diff = target - now;
+        if (diff <= 0) {
+          ['cd-d', 'cd-h', 'cd-m', 'cd-s'].forEach(id => document.getElementById(id).textContent = '00');
+          return;
+        }
+        const d = Math.floor(diff / 864e5), h = Math.floor((diff % 864e5) / 36e5), m = Math.floor((diff % 36e5) / 6e4), s = Math.floor((diff % 6e4) / 1e3);
+        document.getElementById('cd-d').textContent = String(d).padStart(2, '0');
+        document.getElementById('cd-h').textContent = String(h).padStart(2, '0');
+        document.getElementById('cd-m').textContent = String(m).padStart(2, '0');
+        document.getElementById('cd-s').textContent = String(s).padStart(2, '0');
+      }
+      tick(); setInterval(tick, 1000);
+    })();
+
+    /* ══════════════════════════════════════════
+       6. CINEMATIC 3D SPACE BACKGROUND ENGINE
+       Deep nebula + hyper-realistic star field + colorful planets
+       360° rotating ISS-style space stations + scroll parallax
+       Mobile gyroscope tilt parallax
+    ══════════════════════════════════════════ */
+    (function () {
+      const cv = document.getElementById('space-canvas'), ctx = cv.getContext('2d');
+      let W, H, mx = 0, my = 0, scrollY = 0, tiltX = 0, tiltY = 0, scrollAngle = 0, lastScrollY = 0;
+      function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight }
+      resize(); window.addEventListener('resize', resize);
+      window.addEventListener('scroll', () => {
+        const sy = window.scrollY;
+        const delta = sy - lastScrollY;
+        scrollAngle += delta * 0.0022; // accumulate rotation from scroll delta
+        lastScrollY = sy;
+        scrollY = sy;
+      });
+      document.addEventListener('mousemove', e => { mx = (e.clientX / W - .5) * 2; my = (e.clientY / H - .5) * 2 });
+
+      // Mobile gyroscope
+      if (window.DeviceOrientationEvent) {
+        window.addEventListener('deviceorientation', e => {
+          tiltX = (e.gamma || 0) / 45; tiltY = (e.beta || 0) / 45;
+          mx = Math.max(-1, Math.min(1, tiltX));
+          my = Math.max(-1, Math.min(1, tiltY));
+        });
+      }
+
+      // ── Deep star layers (3 depth levels) ──
+      const STARS_DEEP = Array.from({ length: 500 }, () => ({
+        x: Math.random(), y: Math.random(), r: .15 + Math.random() * .4,
+        twP: Math.random() * Math.PI * 2, twS: .008 + Math.random() * .012,
+        col: ['rgba(210,200,255,', 'rgba(255,240,220,', 'rgba(180,220,255,', 'rgba(255,255,255,'][~~(Math.random() * 4)],
+        parallax: .02
+      }));
+      const STARS_MID = Array.from({ length: 350 }, () => ({
+        x: Math.random(), y: Math.random(), r: .3 + Math.random() * .8,
+        twP: Math.random() * Math.PI * 2, twS: .015 + Math.random() * .02,
+        col: ['rgba(255,200,235,', 'rgba(200,170,255,', 'rgba(160,215,255,', 'rgba(255,245,190,', 'rgba(255,255,255,'][~~(Math.random() * 5)],
+        parallax: .06
+      }));
+      const STARS_NEAR = Array.from({ length: 120 }, () => ({
+        x: Math.random(), y: Math.random(), r: .8 + Math.random() * 1.8,
+        twP: Math.random() * Math.PI * 2, twS: .025 + Math.random() * .03,
+        col: ['rgba(244,114,182,', 'rgba(168,85,247,', 'rgba(34,211,238,', 'rgba(251,191,36,', 'rgba(255,255,255,'][~~(Math.random() * 5)],
+        parallax: .14
+      }));
+
+      // ── Nebula clouds ──
+      const NEBULAE = [
+        { x: .08, y: .12, rx: 520, ry: 280, a: .045, col: 'rgba(124,58,237,', ph: 0, spd: .0008 },
+        { x: .92, y: .08, rx: 480, ry: 320, a: .038, col: 'rgba(244,114,182,', ph: 1.2, spd: .001 },
+        { x: .5, y: .55, rx: 600, ry: 350, a: .032, col: 'rgba(22,63,180,', ph: 2.4, spd: .0007 },
+        { x: .15, y: .78, rx: 400, ry: 240, a: .042, col: 'rgba(34,211,238,', ph: 3.6, spd: .0009 },
+        { x: .82, y: .7, rx: 450, ry: 260, a: .036, col: 'rgba(232,68,120,', ph: 0.8, spd: .0011 },
+        { x: .45, y: .25, rx: 350, ry: 200, a: .028, col: 'rgba(168,85,247,', ph: 4.2, spd: .0006 },
+        { x: .68, y: .42, rx: 300, ry: 180, a: .022, col: 'rgba(251,191,36,', ph: 1.8, spd: .0013 },
+      ];
+
+      // ── Colorful cartoon planets (matching space.jpg vibe) ──
+      const PLANETS = [
+        {
+          xB: .07, yB: .15, r: 58, parallax: .04, hue: 310,
+          stops: [[0, '#ff78c4'], [.4, '#e040a0'], [.75, '#9b1060'], [1, '#3d0030']],
+          glow: 'rgba(255,80,170,', glowA: .5, rings: [{ a: 30, r1: 1.3, r2: 1.65, col: 'rgba(255,100,200,.5)' }],
+          bands: [{ y: .35, h: .12, col: 'rgba(255,180,230,.18)' }, { y: .6, h: .08, col: 'rgba(200,0,120,.12)' }]
+        },
+        {
+          xB: .85, yB: .12, r: 72, parallax: .035,
+          stops: [[0, '#c0e8ff'], [.3, '#78b8ff'], [.6, '#2050d0'], [1, '#050a30']],
+          glow: 'rgba(80,150,255,', glowA: .45, rings: [{ a: 20, r1: 1.25, r2: 1.7, col: 'rgba(100,180,255,.4)' }, { a: 20, r1: 1.8, r2: 2.1, col: 'rgba(60,100,200,.25)' }],
+          bands: [{ y: .3, h: .1, col: 'rgba(200,230,255,.15)' }, { y: .55, h: .15, col: 'rgba(30,80,200,.12)' }]
+        },
+        {
+          xB: .12, yB: .55, r: 38, parallax: .06,
+          stops: [[0, '#80f0e0'], [.35, '#20c8a8'], [.65, '#0a7060'], [1, '#021a18']],
+          glow: 'rgba(0,210,180,', glowA: .55, rings: [],
+          bands: [{ y: .4, h: .15, col: 'rgba(150,255,240,.2)' }]
+        },
+        {
+          xB: .88, yB: .68, r: 44, parallax: .05,
+          stops: [[0, '#ffe890'], [.35, '#f0a820'], [.65, '#c06010'], [1, '#301400']],
+          glow: 'rgba(255,180,30,', glowA: .55, rings: [],
+          bands: [{ y: .35, h: .18, col: 'rgba(255,220,100,.2)' }, { y: .65, h: .1, col: 'rgba(200,100,0,.15)' }]
+        },
+        {
+          xB: .6, yB: .08, r: 26, parallax: .08,
+          stops: [[0, '#d0a0e8'], [.4, '#8040c0'], [.7, '#3a1070'], [1, '#0d0020']],
+          glow: 'rgba(180,80,255,', glowA: .5, rings: [{ a: 15, r1: 1.3, r2: 1.6, col: 'rgba(200,120,255,.4)' }],
+          bands: []
+        },
+        // Earth
+        {
+          xB: .72, yB: .42, r: 62, parallax: .045,
+          stops: [[0, '#4fc3f7'], [.25, '#29b6f6'], [.55, '#1976d2'], [.8, '#0d47a1'], [1, '#01224a']],
+          glow: 'rgba(41,182,246,', glowA: .55,
+          rings: [],
+          bands: [{ y: .18, h: .08, col: 'rgba(255,255,255,.18)' }, { y: .38, h: .06, col: 'rgba(255,255,255,.12)' }, { y: .65, h: .1, col: 'rgba(255,255,255,.15)' }],
+          isEarth: true
+        },
+        // Moon
+        {
+          xB: .78, yB: .58, r: 20, parallax: .055,
+          stops: [[0, '#e8e4dc'], [.3, '#c8c4b8'], [.6, '#a0988c'], [1, '#4a4440']],
+          glow: 'rgba(220,215,200,', glowA: .35, rings: [],
+          bands: [], isMoon: true
+        },
+      ];
+
+      // ── Shooting stars ──
+      const shooters = [];
+      function spawnShooter() {
+        shooters.push({
+          x: Math.random() * .7, y: Math.random() * .5,
+          len: .08 + Math.random() * .1, speed: .004 + Math.random() * .005,
+          angle: Math.PI * .22 + (Math.random() - .5) * .3, life: 0,
+          maxLife: 50 + ~~(Math.random() * 50),
+          col: ['rgba(255,255,255,', 'rgba(200,180,255,', 'rgba(255,220,180,'][~~(Math.random() * 3)]
+        });
+      }
+      setInterval(spawnShooter, 2800); spawnShooter(); spawnShooter();
+
+      function drawPlanet(p, cx, cy, r, spinAngle) {
+        spinAngle = spinAngle || 0;
+        ctx.save();
+        // Outer glow aura
+        const aura = ctx.createRadialGradient(cx, cy, r * .5, cx, cy, r * 3.2);
+        aura.addColorStop(0, p.glow + (p.glowA * .4) + ')');
+        aura.addColorStop(.4, p.glow + (p.glowA * .15) + ')');
+        aura.addColorStop(1, p.glow + '0)');
+        ctx.beginPath(); ctx.arc(cx, cy, r * 3.2, 0, Math.PI * 2); ctx.fillStyle = aura; ctx.fill();
+
+        // Clip to planet circle
+        ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+
+        // Rotate surface with scroll
+        ctx.translate(cx, cy); ctx.rotate(spinAngle); ctx.translate(-cx, -cy);
+
+        // Base gradient
+        const grd = ctx.createRadialGradient(cx - r * .3, cy - r * .3, 0, cx + r * .1, cy + r * .1, r * 1.2);
+        p.stops.forEach(s => grd.addColorStop(s[0], s[1]));
+        ctx.fillStyle = grd; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+
+        // Earth: green land masses
+        if (p.isEarth) {
+          ctx.fillStyle = 'rgba(56,142,60,.7)';
+          ctx.beginPath(); ctx.ellipse(cx - r * .25, cy - r * .1, r * .3, r * .22, 0.5, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(cx + r * .1, cy + r * .15, r * .25, r * .18, -0.3, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(cx - r * .05, cy - r * .3, r * .18, r * .12, 0.8, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.ellipse(cx + r * .3, cy - r * .2, r * .14, r * .1, -0.4, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // Surface bands (clouds for Earth)
+        p.bands && p.bands.forEach(b => {
+          ctx.fillStyle = b.col; ctx.fillRect(cx - r, cy - r + b.y * r * 2, r * 2, b.h * r * 2);
+        });
+
+        // Moon: craters
+        if (p.isMoon) {
+          [[-.3, -.25, r * .14], [.2, .15, r * .1], [-.1, .3, r * .09], [.35, -.2, r * .07], [-.38, .15, r * .06]].forEach(([dx, dy, cr]) => {
+            ctx.save();
+            ctx.beginPath(); ctx.arc(cx + dx * r, cy + dy * r, cr, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(80,72,68,.55)'; ctx.fill();
+            ctx.strokeStyle = 'rgba(180,170,160,.2)'; ctx.lineWidth = 1; ctx.stroke();
+            ctx.restore();
+          });
+        }
+
+        // Atmospheric glow overlay
+        const atm = ctx.createRadialGradient(cx - r * .4, cy - r * .4, 0, cx, cy, r);
+        atm.addColorStop(0, 'rgba(255,255,255,.18)'); atm.addColorStop(.6, 'rgba(255,255,255,.04)'); atm.addColorStop(1, 'rgba(0,0,0,.3)');
+        ctx.fillStyle = atm; ctx.fillRect(cx - r, cy - r, r * 2, r * 2);
+
+        ctx.restore();
+
+        // Rings (drawn outside clip)
+        if (p.rings && p.rings.length) {
+          p.rings.forEach(rng => {
+            ctx.save(); ctx.translate(cx, cy); ctx.scale(1, Math.sin(rng.a * Math.PI / 180));
+            const rg = ctx.createRadialGradient(0, 0, r * rng.r1, 0, 0, r * rng.r2);
+            rg.addColorStop(0, 'rgba(0,0,0,0)'); rg.addColorStop(.4, rng.col); rg.addColorStop(1, 'rgba(0,0,0,0)');
+            ctx.beginPath(); ctx.arc(0, 0, r * rng.r2, 0, Math.PI * 2); ctx.fillStyle = rg; ctx.fill();
+            ctx.restore();
+          });
+        }
+
+        // Earth atmosphere rim
+        if (p.isEarth) {
+          ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+          const rim = ctx.createRadialGradient(cx, cy, r * .75, cx, cy, r);
+          rim.addColorStop(0, 'rgba(100,200,255,0)'); rim.addColorStop(.7, 'rgba(100,200,255,.1)'); rim.addColorStop(1, 'rgba(80,160,255,.5)');
+          ctx.fillStyle = rim; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+        }
+
+        // Lens shine
+        ctx.save(); ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.clip();
+        const sh = ctx.createRadialGradient(cx - r * .38, cy - r * .38, 0, cx - r * .2, cy - r * .2, r * .65);
+        sh.addColorStop(0, 'rgba(255,255,255,.25)'); sh.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = sh; ctx.fillRect(cx - r, cy - r, r * 2, r * 2); ctx.restore();
+      }
+
+      let t = 0;
+
+      // Draw a star layer rotated around viewport centre at given angle
+      function drawStarLayer(stars, angle, parallaxMul) {
+        const cx = W / 2, cy = H / 2;
+        const cos = Math.cos(angle), sin = Math.sin(angle);
+        stars.forEach(s => {
+          // Mouse/tilt parallax offset
+          const mpx = (mx + tiltX) * W * s.parallax * -.5;
+          const mpy = (my + tiltY) * H * s.parallax * -.3;
+          // Original position relative to centre
+          const sx = s.x * W - cx + mpx, sy = s.y * H - cy + mpy;
+          // Rotate around centre
+          const rx = cx + sx * cos - sy * sin;
+          const ry = cy + sx * sin + sy * cos;
+          // Wrap — keep within extended bounds so stars fill screen after rotation
+          const fw = W * 1.5, fh = H * 1.5;
+          const fx = ((rx + fw / 2) % (fw) + fw) % (fw) - fw / 2 + cx;
+          const fy = ((ry + fh / 2) % (fh) + fh) % (fh) - fh / 2 + cy;
+          const tw = .4 + .6 * Math.sin(t * s.twS * 80 + s.twP);
+          ctx.beginPath(); ctx.arc(fx, fy, s.r * (.7 + .3 * tw), 0, Math.PI * 2);
+          ctx.fillStyle = s.col + ((.3 + .7 * tw).toFixed(2)) + ')'; ctx.fill();
+          if (s.r > 1) {
+            ctx.save(); ctx.globalAlpha = tw * .15;
+            const sg = ctx.createRadialGradient(fx, fy, 0, fx, fy, s.r * 4);
+            sg.addColorStop(0, s.col + '.6)'); sg.addColorStop(1, s.col + '0)');
+            ctx.beginPath(); ctx.arc(fx, fy, s.r * 4, 0, Math.PI * 2); ctx.fillStyle = sg; ctx.fill();
+            ctx.restore();
+          }
+        });
+      }
+
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+
+        const cx = W / 2, cy = H / 2;
+
+        // Deep space gradient base — always centred
+        const bg = ctx.createRadialGradient(cx, cy * .8, 0, cx, cy, W * .9);
+        bg.addColorStop(0, '#0e0030'); bg.addColorStop(.35, '#07001a');
+        bg.addColorStop(.7, '#040012'); bg.addColorStop(1, '#020008');
+        ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+
+        // ── Nebula — rotate slowest (deepest layer) ──
+        const nebulaAngle = scrollAngle * 0.18;
+        ctx.save();
+        ctx.translate(cx, cy); ctx.rotate(nebulaAngle); ctx.translate(-cx, -cy);
+        NEBULAE.forEach(n => {
+          const pulse = .7 + .3 * Math.sin(t * n.spd * 1000 + n.ph);
+          const ox = mx * W * -.025, oy = my * H * -.015;
+          const nx = n.x * W + ox, ny = n.y * H + oy;
+          const grd = ctx.createRadialGradient(nx, ny, 0, nx, ny, Math.max(n.rx, n.ry));
+          grd.addColorStop(0, n.col + (n.a * pulse) + ')');
+          grd.addColorStop(.4, n.col + (n.a * pulse * .5) + ')');
+          grd.addColorStop(1, n.col + '0)');
+          ctx.save(); ctx.scale(1, n.ry / n.rx);
+          ctx.beginPath(); ctx.arc(nx, ny * n.rx / n.ry, n.rx, 0, Math.PI * 2);
+          ctx.fillStyle = grd; ctx.fill(); ctx.restore();
+        });
+        ctx.restore();
+
+        // ── Deep stars — rotate slow ──
+        drawStarLayer(STARS_DEEP, scrollAngle * 0.22, 1);
+
+        // ── Mid stars — rotate medium ──
+        drawStarLayer(STARS_MID, scrollAngle * 0.38, 1);
+
+        // ── Planets — rotate mid-depth, orbit around centre ──
+        const planetAngle = scrollAngle * 0.30;
+        PLANETS.forEach((p, pi) => {
+          const ox = mx * W * p.parallax * -.8, oy = my * H * p.parallax * -.5;
+          // Rotate planet position around viewport centre
+          const px = p.xB * W - cx + ox, py = p.yB * H - cy + oy;
+          const cos = Math.cos(planetAngle), sin = Math.sin(planetAngle);
+          const rcx = cx + px * cos - py * sin;
+          const rcy = cy + px * sin + py * cos;
+          const spinAngle = t * (.18 + pi * .06) * (pi % 2 === 0 ? 1 : -1);
+          drawPlanet(p, rcx, rcy, p.r, spinAngle);
+        });
+
+        // ── Near stars — rotate fastest (closest layer) ──
+        drawStarLayer(STARS_NEAR, scrollAngle * 0.55, 1);
+
+        // Shooting stars (always in screen coords, no rotation)
+        for (let i = shooters.length - 1; i >= 0; i--) {
+          const sh = shooters[i]; sh.life++;
+          if (sh.life > sh.maxLife) { shooters.splice(i, 1); continue }
+          const prog = sh.life / sh.maxLife;
+          const alph = prog < .2 ? prog / .2 : prog > .75 ? (1 - prog) / .25 : 1;
+          const sx = sh.x * W + Math.cos(sh.angle) * sh.speed * W * sh.life;
+          const sy = sh.y * H + Math.sin(sh.angle) * sh.speed * H * sh.life;
+          const ex = sx - Math.cos(sh.angle) * sh.len * W;
+          const ey = sy - Math.sin(sh.angle) * sh.len * H;
+          const sg = ctx.createLinearGradient(ex, ey, sx, sy);
+          sg.addColorStop(0, sh.col + '0)'); sg.addColorStop(.5, sh.col + (alph * .6) + ')'); sg.addColorStop(1, sh.col + (alph * .95) + ')');
+          ctx.beginPath(); ctx.moveTo(ex, ey); ctx.lineTo(sx, sy);
+          ctx.strokeStyle = sg; ctx.lineWidth = 1.5; ctx.globalAlpha = 1; ctx.stroke();
+          ctx.save(); ctx.globalAlpha = alph * .85;
+          const hg = ctx.createRadialGradient(sx, sy, 0, sx, sy, 4);
+          hg.addColorStop(0, 'rgba(255,255,255,1)'); hg.addColorStop(1, 'rgba(255,255,255,0)');
+          ctx.beginPath(); ctx.arc(sx, sy, 4, 0, Math.PI * 2); ctx.fillStyle = hg; ctx.fill(); ctx.restore();
+        }
+
+        t += .008; requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    /* ══════════════════════════════════════════
+       7. DEPTH CANVAS — 360° ROTATING SPACE STATIONS
+       ISS-style cinematic structures with solar panels
+    ══════════════════════════════════════════ */
+    (function () {
+      const cv = document.getElementById('depth-canvas'), ctx = cv.getContext('2d');
+      let W, H, scrollPY = 0, mx = 0, my = 0;
+      function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight }
+      resize(); window.addEventListener('resize', resize);
+      window.addEventListener('scroll', () => scrollPY = window.scrollY);
+      document.addEventListener('mousemove', e => { mx = (e.clientX / W - .5); my = (e.clientY / H - .5) });
+
+      // Draw realistic ISS-like space station
+      function drawStation(cx, cy, angle, scale, alpha, variant) {
+        ctx.save(); ctx.globalAlpha = alpha;
+        ctx.translate(cx, cy); ctx.rotate(angle); ctx.scale(scale, scale);
+
+        const s = variant === 0 ? 1 : -1;
+        const goldPan = 'rgba(255,200,40,';
+        const solarCol = 'rgba(30,80,160,';
+        const frameCol = 'rgba(200,210,220,';
+        const moduleCol = 'rgba(180,190,200,';
+        const glowC = 'rgba(255,180,80,';
+
+        // Solar panel glow
+        [[-(90 + s * 20), 0], [90 + s * 20, 0]].forEach(pos => {
+          const gg = ctx.createRadialGradient(pos[0], pos[1], 0, pos[0], pos[1], 60);
+          gg.addColorStop(0, glowC + '0.18)'); gg.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.beginPath(); ctx.arc(pos[0], pos[1], 60, 0, Math.PI * 2); ctx.fillStyle = gg; ctx.fill();
+        });
+
+        // Main truss (horizontal spine)
+        ctx.fillStyle = frameCol + '.7)';
+        ctx.fillRect(-110, -3, 220, 6);
+        // Truss segments detail
+        for (let i = -100; i <= 100; i += 20) {
+          ctx.fillStyle = frameCol + '.5)';
+          ctx.fillRect(i, -5, 2, 10);
+        }
+
+        // Central hub module
+        const mGrd = ctx.createRadialGradient(-8, -8, 0, 0, 0, 22);
+        mGrd.addColorStop(0, moduleCol + '.9)'); mGrd.addColorStop(1, moduleCol + '.5)');
+        ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.fillStyle = mGrd; ctx.fill();
+        ctx.strokeStyle = frameCol + '.6)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        // Habitation modules (left/right of center)
+        [-48, -26, 26, 48].forEach((mx2, i) => {
+          const mG = ctx.createLinearGradient(mx2 - 12, -10, mx2 + 12, 10);
+          mG.addColorStop(0, moduleCol + '.8)'); mG.addColorStop(1, moduleCol + '.4)');
+          ctx.fillStyle = mG;
+          ctx.beginPath(); ctx.roundRect(mx2 - 12, -9, 24, 18, 4); ctx.fill();
+          ctx.strokeStyle = frameCol + '.4)'; ctx.lineWidth = 1; ctx.stroke();
+          // Module porthole
+          ctx.beginPath(); ctx.arc(mx2, 0, 5, 0, Math.PI * 2);
+          const portGrd = ctx.createRadialGradient(mx2 - 2, -2, 0, mx2, 0, 5);
+          portGrd.addColorStop(0, 'rgba(150,200,255,.9)'); portGrd.addColorStop(1, 'rgba(30,60,120,.7)');
+          ctx.fillStyle = portGrd; ctx.fill();
+        });
+
+        // Radiator panels (top/bottom of truss)
+        [[-60, s * 18], [-20, s * 18], [20, s * 18], [60, s * 18]].forEach(rp => {
+          ctx.fillStyle = 'rgba(150,160,170,.6)';
+          ctx.fillRect(rp[0] - 7, rp[1], 14, s * 16);
+        });
+
+        // Solar array wings — LEFT
+        function drawSolarArray(bx, by, flip) {
+          const f = flip ? -1 : 1;
+          // Array support boom
+          ctx.fillStyle = frameCol + '.65)'; ctx.fillRect(bx, by - 2, f * 18, 4);
+          // Solar panels (2 banks)
+          [-1, 1].forEach(row => {
+            const px = bx + f * 18, py = by + row * 16;
+            // Panel frame
+            ctx.fillStyle = solarCol + '.8)'; ctx.fillRect(px, py - 13, f * 60, 26);
+            // Panel cells grid
+            for (let ci = 0; ci < 5; ci++) {
+              ctx.fillStyle = solarCol + '.4)';
+              ctx.fillRect(px + f * ci * 12, py - 13, f * 10, 26);
+              // Cell highlight
+              ctx.fillStyle = goldPan + '.08)';
+              ctx.fillRect(px + f * ci * 12, py - 13, f * 10, 12);
+            }
+            // Panel glow
+            const pg = ctx.createLinearGradient(px, py - 13, px, py + 13);
+            pg.addColorStop(0, goldPan + '.12)'); pg.addColorStop(.5, solarCol + '.0)'); pg.addColorStop(1, goldPan + '.08)');
+            ctx.fillStyle = pg; ctx.fillRect(px, py - 13, f * 60, 26);
+            // Panel border
+            ctx.strokeStyle = frameCol + '.5)'; ctx.lineWidth = .8; ctx.strokeRect(px, py - 13, f * 60, 26);
+          });
+        }
+
+        drawSolarArray(-110, 0, false);
+        drawSolarArray(110, 0, true);
+
+        // Docking port
+        ctx.fillStyle = frameCol + '.7)';
+        ctx.beginPath(); ctx.arc(0, 28, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = frameCol + '.5)'; ctx.lineWidth = 1.5; ctx.stroke();
+
+        // Antenna mast
+        ctx.strokeStyle = frameCol + '.5)'; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, -20); ctx.lineTo(0, -42); ctx.stroke();
+        ctx.beginPath(); ctx.arc(0, -44, 3, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255,80,80,.8)'; ctx.fill();
+
+        // Running lights pulse
+        const lightA = .5 + .5 * Math.sin(Date.now() * .003 + variant);
+        ['#ff4444', '#44ff88', 'rgba(255,255,255,'].forEach((lc, li) => {
+          ctx.beginPath(); ctx.arc([-70, 70, 0][li], [0, 0, -20][li], 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = typeof lc === 'string' && lc.includes('rgba') ? lc + lightA + ')' : lc;
+          ctx.globalAlpha = alpha * (0.5 + 0.5 * Math.sin(Date.now() * .004 + li * 2)); ctx.fill();
+        });
+
+        ctx.restore();
+      }
+
+      // Station orbital paths
+      const STATIONS = [
+        { orbitR: 0, orbitRY: 0, baseX: .28, baseY: .32, angle: 0, rotSpeed: .004, scale: .95, variant: 0, zDepth: 1.0 },
+        { orbitR: 0, orbitRY: 0, baseX: .72, baseY: .62, angle: Math.PI, rotSpeed: -.003, scale: .65, variant: 1, zDepth: .7 },
+        { orbitR: 0, orbitRY: 0, baseX: .15, baseY: .70, angle: Math.PI * .5, rotSpeed: .005, scale: .42, variant: 0, zDepth: .45 },
+      ];
+
+      let t = 0;
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+        STATIONS.forEach((st, i) => {
+          st.angle += st.rotSpeed;
+          const ox = mx * W * -.04, oy = my * H * -.025 - scrollPY * st.zDepth * .025;
+          const cx = st.baseX * W + ox, cy = st.baseY * H + oy;
+          drawStation(cx, cy, st.angle, st.scale, Math.min(.92, st.zDepth * .9), st.variant);
+        });
+        t += .016; requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    /* ══════════════════════════════════════════
+       8. PARTICLE CANVAS — COSMIC DUST + ENERGY FLARES
+    ══════════════════════════════════════════ */
+    (function () {
+      const cv = document.getElementById('particle-canvas'), ctx = cv.getContext('2d');
+      let W, H;
+      function resize() { W = cv.width = window.innerWidth; H = cv.height = window.innerHeight }
+      resize(); window.addEventListener('resize', resize);
+
+      // Cosmic dust
+      const dust = Array.from({ length: 80 }, () => ({
+        x: Math.random(), y: Math.random(),
+        vx: (Math.random() - .5) * .00025, vy: (Math.random() - .5) * .00015,
+        r: .4 + Math.random() * 1.2,
+        op: .06 + Math.random() * .16,
+        col: ['rgba(168,85,247,', 'rgba(244,114,182,', 'rgba(34,211,238,', 'rgba(251,191,36,'][~~(Math.random() * 4)]
+      }));
+
+      // Energy flares (orbiting lens flares)
+      const flares = Array.from({ length: 5 }, () => ({
+        orbitR: 80 + Math.random() * 200, orbitY: Math.random() * .8,
+        angle: Math.random() * Math.PI * 2, speed: (.0008 + Math.random() * .001) * (Math.random() > .5 ? 1 : -1),
+        r: 2 + Math.random() * 5, col: ['rgba(255,200,100,', 'rgba(180,100,255,', 'rgba(100,220,255,'][~~(Math.random() * 3)],
+        baseX: .3 + Math.random() * .4
+      }));
+
+      function frame() {
+        ctx.clearRect(0, 0, W, H);
+        dust.forEach(d => {
+          d.x += d.vx; d.y += d.vy;
+          if (d.x < 0) d.x = 1; if (d.x > 1) d.x = 0; if (d.y < 0) d.y = 1; if (d.y > 1) d.y = 0;
+          ctx.beginPath(); ctx.arc(d.x * W, d.y * H, d.r, 0, Math.PI * 2);
+          ctx.fillStyle = d.col + d.op + ')'; ctx.fill();
+        });
+        flares.forEach(f => {
+          f.angle += f.speed;
+          const cx = f.baseX * W + Math.cos(f.angle) * f.orbitR;
+          const cy = f.orbitY * H + Math.sin(f.angle) * f.orbitR * .3;
+          const fg = ctx.createRadialGradient(cx, cy, 0, cx, cy, f.r * 6);
+          fg.addColorStop(0, f.col + '.7)'); fg.addColorStop(.3, f.col + '.2)'); fg.addColorStop(1, f.col + '0)');
+          ctx.beginPath(); ctx.arc(cx, cy, f.r * 6, 0, Math.PI * 2); ctx.fillStyle = fg; ctx.fill();
+          // Core
+          ctx.beginPath(); ctx.arc(cx, cy, f.r, 0, Math.PI * 2);
+          ctx.fillStyle = f.col + '0.9)'; ctx.fill();
+        });
+        requestAnimationFrame(frame);
+      }
+      frame();
+    })();
+
+    /* ══════════════════════════════════════════
+       9. MOUSE PARALLAX ON HERO CONTENT
+    ══════════════════════════════════════════ */
+    (function () {
+      const hero = document.querySelector('.hero');
+      if (!hero) return;
+      hero.addEventListener('mousemove', e => {
+        const r = hero.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - .5;
+        const ny = (e.clientY - r.top) / r.height - .5;
+        const inner = hero.querySelector('.hero-inner');
+        if (inner) inner.style.transform = `translate(${nx * 12}px,${ny * 8}px)`;
+      });
+      hero.addEventListener('mouseleave', () => {
+        const inner = hero.querySelector('.hero-inner');
+        if (inner) inner.style.transform = '';
+      });
+    })();
+    (function () {
+      const cv = document.getElementById('cake-canvas');
+      if (!cv) return;
+      const ctx = cv.getContext('2d');
+      const W = 340, H = 400;
+      cv.width = W; cv.height = H;
+
+      let blown = false;
+      let sparkBurst = [], smokeParticles = [];
+      let t = 0;
+
+      const CANDLES = [
+        { x: 132, y: 106, col: '#fbbf24', phase: 0 },
+        { x: 170, y: 99, col: '#c084fc', phase: 1.3 },
+        { x: 208, y: 107, col: '#f472b6', phase: 2.6 }
+      ];
+
+      const blowBtn = document.getElementById('blow-btn');
+      const hbReveal = document.getElementById('hb-reveal');
+
+      // ── PHASE 2: Blow candles ──
+      blowBtn.addEventListener('click', () => {
+        if (blown) return;
+        blown = true;
+        blowBtn.disabled = true;
+        blowBtn.style.opacity = '0';
+
+        // Smoke from each candle
+        CANDLES.forEach(c => {
+          for (let i = 0; i < 20; i++) {
+            smokeParticles.push({
+              x: c.x + (Math.random() - .5) * 6, y: c.y - 14,
+              vx: (Math.random() - .5) * .7, vy: -(1.2 + Math.random() * 1.8),
+              r: 4 + Math.random() * 6, alpha: .6 + Math.random() * .2
+            });
+          }
+        });
+
+        // Screen flash
+        const fl = document.createElement('div');
+        Object.assign(fl.style, { position: 'fixed', inset: '0', background: 'rgba(255,255,255,.55)', zIndex: '99998', pointerEvents: 'none', transition: 'opacity .5s' });
+        document.body.appendChild(fl);
+        setTimeout(() => { fl.style.opacity = '0'; setTimeout(() => fl.remove(), 600); }, 80);
+
+        // Confetti
+        launchConfetti();
+
+        // Spark explosions
+        [[W * .25, H * .35], [W * .5, H * .25], [W * .75, H * .35]].forEach((o, i) => {
+          setTimeout(() => spawnSparks(o[0], o[1], 50), i * 160);
+        });
+
+        // Happy Birthday reveal
+        setTimeout(() => {
+          hbReveal.classList.add('shown');
+          spawnHBStars();
+        }, 900);
+      });
+
+      // ── DRAWING HELPERS ──
+      function roundRect(x, y, w, h, r) {
+        ctx.beginPath();
+        ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        ctx.lineTo(x + r, y + h); ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
+      }
+
+      function drawLayer(x, y, w, h, r, colors, label, ly, fs) {
+        ctx.save();
+        const g = ctx.createLinearGradient(x, y, x, y + h);
+        colors.forEach((c, i) => g.addColorStop(i / (colors.length - 1), c));
+        roundRect(x, y, w, h, r); ctx.fillStyle = g; ctx.fill();
+
+        // Side sheen
+        const sg = ctx.createLinearGradient(x, y, x + w, y);
+        sg.addColorStop(0, 'rgba(0,0,0,.22)'); sg.addColorStop(.18, 'rgba(255,255,255,.08)');
+        sg.addColorStop(.5, 'rgba(255,255,255,0)'); sg.addColorStop(.82, 'rgba(255,255,255,.08)'); sg.addColorStop(1, 'rgba(0,0,0,.22)');
+        roundRect(x, y, w, h, r); ctx.fillStyle = sg; ctx.fill();
+
+        // Frosting drips
+        [x + w * .18, x + w * .4, x + w * .62, x + w * .84].forEach(dx => {
+          const dh = 7 + Math.sin(t * .8 + dx) * .4 * 3;
+          ctx.beginPath(); ctx.arc(dx, y + dh, 4.5, 0, Math.PI * 2);
+          ctx.fillStyle = colors[0] + 'bb'; ctx.fill();
+          ctx.beginPath(); ctx.moveTo(dx - 3.5, y);
+          ctx.quadraticCurveTo(dx, y + dh * .5, dx, y + dh);
+          ctx.lineWidth = 3.5; ctx.strokeStyle = colors[0] + '99'; ctx.stroke();
+        });
+
+        // Frosting highlight
+        const fG = ctx.createLinearGradient(x, y, x + w, y);
+        fG.addColorStop(0, 'rgba(255,255,255,.02)'); fG.addColorStop(.3, 'rgba(255,255,255,.45)');
+        fG.addColorStop(.7, 'rgba(255,255,255,.45)'); fG.addColorStop(1, 'rgba(255,255,255,.02)');
+        roundRect(x, y - 1, w, 13, 6); ctx.fillStyle = fG; ctx.fill();
+
+        // Label
+        if (label) {
+          ctx.save();
+          ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
+          ctx.font = `italic ${fs}px 'Playfair Display',serif`;
+          ctx.textAlign = 'center'; ctx.fillStyle = 'rgba(255,255,255,.88)';
+          ctx.fillText(label, x + w / 2, y + ly);
+          ctx.restore();
+        }
+        ctx.restore();
+      }
+
+      function drawCandle(c) {
+        const wG = ctx.createLinearGradient(c.x - 5, 0, c.x + 5, 0);
+        wG.addColorStop(0, 'rgba(160,100,40,.9)'); wG.addColorStop(.5, c.col + 'ee'); wG.addColorStop(1, 'rgba(160,100,40,.9)');
+        ctx.save(); ctx.fillStyle = wG; roundRect(c.x - 5, c.y, 10, 36, 4); ctx.fill(); ctx.restore();
+      }
+
+      function drawFlame(c) {
+        const ft = t + c.phase;
+        const wx = Math.sin(ft * 3.9) * 2.2, wy = Math.cos(ft * 2.5) * 1.3;
+        const flH = 20 + Math.sin(ft * 4.2) * .9 + Math.cos(ft * 3) * 1;
+        const fx = c.x + wx, fy = c.y - 4 + wy;
+        ctx.save();
+        // Halo
+        const hG = ctx.createRadialGradient(fx, fy, 0, fx, fy, 24);
+        hG.addColorStop(0, c.col + '66'); hG.addColorStop(1, 'transparent');
+        ctx.beginPath(); ctx.arc(fx, fy, 24, 0, Math.PI * 2); ctx.fillStyle = hG; ctx.fill();
+        // Outer flame
+        const oG = ctx.createRadialGradient(fx, fy + 5, 0, fx, fy - flH + 5, flH);
+        oG.addColorStop(0, '#fff'); oG.addColorStop(.3, c.col); oG.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.moveTo(fx, fy - flH);
+        ctx.bezierCurveTo(fx + 6, fy - flH * .5, fx + 8, fy - 4, fx, fy + 4);
+        ctx.bezierCurveTo(fx - 8, fy - 4, fx - 6, fy - flH * .5, fx, fy - flH);
+        ctx.fillStyle = oG; ctx.fill();
+        // Inner white core
+        const iG = ctx.createRadialGradient(fx, fy, 0, fx, fy - flH * .55, flH * .5);
+        iG.addColorStop(0, 'rgba(255,255,255,.95)'); iG.addColorStop(.5, 'rgba(255,255,255,.3)'); iG.addColorStop(1, 'transparent');
+        ctx.beginPath();
+        ctx.moveTo(fx, fy - flH * .88);
+        ctx.bezierCurveTo(fx + 2.8, fy - flH * .45, fx + 3.2, fy - 2, fx, fy + 2);
+        ctx.bezierCurveTo(fx - 3.2, fy - 2, fx - 2.8, fy - flH * .45, fx, fy - flH * .88);
+        ctx.fillStyle = iG; ctx.fill();
+        ctx.restore();
+      }
+
+      function drawGems() {
+        [{ x: 72, y: 348, r: 8, c: 'rgba(255,255,255,.3)' }, { x: 110, y: 362, r: 6, c: 'rgba(244,114,182,.6)' },
+        { x: 228, y: 345, r: 7, c: 'rgba(168,85,247,.5)' }, { x: 265, y: 360, r: 5, c: 'rgba(255,255,255,.22)' },
+        { x: 170, y: 368, r: 5, c: 'rgba(34,211,238,.45)' }].forEach(g => {
+          ctx.save();
+          ctx.beginPath(); ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+          const rG = ctx.createRadialGradient(g.x - g.r * .3, g.y - g.r * .3, 0, g.x, g.y, g.r);
+          rG.addColorStop(0, 'rgba(255,255,255,.9)'); rG.addColorStop(1, g.c);
+          ctx.fillStyle = rG; ctx.fill(); ctx.restore();
+        });
+      }
+
+      // ── SPARK SYSTEM ──
+      function spawnSparks(sx, sy, count) {
+        const cols = ['#fbbf24', '#f472b6', '#c084fc', '#fff', '#22d3ee', '#fb7185'];
+        for (let i = 0; i < count; i++) {
+          const ang = Math.random() * Math.PI * 2, spd = 2 + Math.random() * 7;
+          sparkBurst.push({
+            x: sx, y: sy, vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+            r: 1.5 + Math.random() * 3.5, life: 90 + Math.random() * 20,
+            col: cols[~~(Math.random() * cols.length)]
+          });
+        }
+      }
+
+      // ── MAIN RENDER LOOP ──
+      function frame() {
+        t += .016;
+        ctx.clearRect(0, 0, W, H);
+
+        // Ambient glow under cake
+        const gA = .14 + Math.sin(t * 1.4) * .06;
+        const ambG = ctx.createRadialGradient(W / 2, H - 15, 0, W / 2, H - 15, 130);
+        ambG.addColorStop(0, `rgba(244,114,182,${gA})`); ambG.addColorStop(.6, `rgba(168,85,247,${gA * .4})`); ambG.addColorStop(1, 'transparent');
+        ctx.beginPath(); ctx.ellipse(W / 2, H - 15, 130, 25, 0, 0, Math.PI * 2); ctx.fillStyle = ambG; ctx.fill();
+
+        // Layers
+        drawLayer(40, 295, 260, 88, 20, ['#f472b6', '#c026d3', '#7c3aed'], 'Suganya', 57, 24);
+        drawLayer(72, 205, 196, 92, 18, ['#a855f7', '#7c3aed', '#0ea5e9'], 'Birthday!', 57, 19);
+        drawLayer(100, 140, 140, 72, 16, ['#fbbf24', '#f59e0b', '#f472b6'], 'Happy', 47, 16);
+        drawGems();
+
+        // Candles & flames
+        CANDLES.forEach(c => { drawCandle(c); if (!blown) drawFlame(c); });
+
+        // Smoke
+        if (blown) {
+          smokeParticles.forEach(p => {
+            p.x += p.vx; p.y += p.vy; p.vy -= .05; p.r += .28; p.alpha -= .009;
+            if (p.alpha > 0) {
+              ctx.save(); ctx.globalAlpha = p.alpha; ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              ctx.fillStyle = 'rgba(210,210,230,.5)'; ctx.filter = 'blur(3px)'; ctx.fill(); ctx.filter = 'none'; ctx.restore();
+            }
+          });
+          smokeParticles = smokeParticles.filter(p => p.alpha > 0);
+        }
+
+        // Sparks
+        sparkBurst = sparkBurst.filter(s => s.life > 0);
+        sparkBurst.forEach(s => {
+          s.x += s.vx; s.y += s.vy; s.vy += .2; s.vx *= .97; s.life -= 2.8; s.r *= .97;
+          ctx.save(); ctx.globalAlpha = Math.max(0, s.life / 100);
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          const sG = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, s.r * 2);
+          sG.addColorStop(0, '#fff'); sG.addColorStop(.4, s.col); sG.addColorStop(1, 'transparent');
+          ctx.fillStyle = sG; ctx.fill(); ctx.restore();
+        });
+
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+
+      // ── HB STAR BURST ──
+      function spawnHBStars() {
+        const stage = document.getElementById('cake-stage');
+        const emojis = ['✨', '🌟', '💖', '🎀', '🎊', '🌸', '🎂', '⭐'];
+        for (let i = 0; i < 10; i++) {
+          setTimeout(() => {
+            const s = document.createElement('div');
+            s.className = 'hb-star';
+            s.textContent = emojis[~~(Math.random() * emojis.length)];
+            s.style.cssText = `left:${10 + Math.random() * 80}%;top:${Math.random() * 60 + 20}%;animation-delay:${Math.random() * .3}s;font-size:${1 + Math.random() * 1.2}rem;position:absolute;z-index:10`;
+            stage.appendChild(s);
+            setTimeout(() => s.remove(), 3000);
+          }, i * 120);
+        }
+      }
+
+      // ── CONFETTI ENGINE ──
+      function launchConfetti() {
+        const cc = document.getElementById('confetti-canvas');
+        cc.width = window.innerWidth; cc.height = window.innerHeight;
+        const cx2 = cc.getContext('2d');
+        let parts = [];
+        const cols = ['#f472b6', '#c084fc', '#fbbf24', '#22d3ee', '#fff', '#fb7185', '#a855f7', '#34d399'];
+        [[cc.width * .2, cc.height * .6], [cc.width * .5, cc.height * .5], [cc.width * .8, cc.height * .6]].forEach((o, oi) => {
+          setTimeout(() => {
+            for (let i = 0; i < 90; i++) {
+              const ang = -Math.PI / 2 + (Math.random() - .5) * Math.PI * 1.5;
+              const spd = 7 + Math.random() * 16;
+              const isRect = Math.random() > .4;
+              parts.push({
+                x: o[0], y: o[1], vx: Math.cos(ang) * spd, vy: Math.sin(ang) * spd,
+                col: cols[~~(Math.random() * cols.length)], alpha: 1,
+                isRect, w: isRect ? 5 + Math.random() * 7 : 0, h: isRect ? 2.5 + Math.random() * 3.5 : 0,
+                r: isRect ? 0 : 2 + Math.random() * 3.5,
+                rot: Math.random() * Math.PI * 2, rotV: (Math.random() - .5) * .28
+              });
+            }
+          }, oi * 150);
+        });
+        let af;
+        (function loop() {
+          cx2.clearRect(0, 0, cc.width, cc.height);
+          parts = parts.filter(p => p.alpha > 0);
+          parts.forEach(p => {
+            p.x += p.vx; p.y += p.vy; p.vy += .33; p.vx *= .985;
+            p.alpha -= .011; p.rot += p.rotV;
+            cx2.save(); cx2.globalAlpha = Math.max(0, p.alpha);
+            if (p.isRect) {
+              cx2.translate(p.x, p.y); cx2.rotate(p.rot);
+              cx2.fillStyle = p.col; cx2.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+            } else {
+              cx2.beginPath(); cx2.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+              const rG = cx2.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2);
+              rG.addColorStop(0, 'rgba(255,255,255,.9)'); rG.addColorStop(.4, p.col); rG.addColorStop(1, 'transparent');
+              cx2.fillStyle = rG; cx2.fill();
+            }
+            cx2.restore();
+          });
+          if (parts.length > 0) af = requestAnimationFrame(loop);
+          else cx2.clearRect(0, 0, cc.width, cc.height);
+        })();
+      }
+    })();
+
+    /* ══════════════════════════════════════════
+       11. CARD 3D TILT
+    ══════════════════════════════════════════ */
+    document.querySelectorAll('.wcard').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - .5;
+        const ny = (e.clientY - r.top) / r.height - .5;
+        card.style.transform = `translateY(-12px) rotateX(${ny * -10}deg) rotateY(${nx * 10}deg) scale(1.02)`;
+      });
+      card.addEventListener('mouseleave', () => { card.style.transform = '' });
+    });
+
+    /* ══════════════════════════════════════════
+       12. UFO TRAIL ENGINE
+    ══════════════════════════════════════════ */
+    (function () {
+      const tc = document.createElement('canvas');
+      tc.style.cssText = 'position:fixed;inset:0;z-index:4;pointer-events:none';
+      document.body.appendChild(tc);
+      let W, H;
+      function resize() { W = tc.width = window.innerWidth; H = tc.height = window.innerHeight }
+      resize(); window.addEventListener('resize', resize);
+      const cx = tc.getContext('2d');
+
+      const ufoEl = document.getElementById('ufo1');
+      let particles = [];
+      let beamParticles = [];
+      let T = 0;
+
+      const trailCols = ['#22d3ee', '#a855f7', '#00ffdd', '#c084fc', '#fff'];
+      const beamCols = ['rgba(0,255,220,', 'rgba(100,200,255,', 'rgba(180,100,255,'];
+
+      function spawnTrail(x, y) {
+        for (let i = 0; i < 5; i++) {
+          const ang = Math.random() * Math.PI * 2;
+          const spd = .4 + Math.random() * 2.2;
+          particles.push({
+            x, y,
+            vx: Math.cos(ang) * spd * (0.3),
+            vy: Math.sin(ang) * spd + 1.5,
+            r: 1.8 + Math.random() * 3.5,
+            alpha: .92,
+            col: trailCols[~~(Math.random() * trailCols.length)],
+            life: 40 + ~~(Math.random() * 35)
+          });
+        }
+      }
+
+      function spawnBeam(x, y) {
+        for (let i = 0; i < 3; i++) {
+          beamParticles.push({
+            x: x + (Math.random() - .5) * 28,
+            y: y + 18,
+            vy: 1.2 + Math.random() * 2,
+            r: 1 + Math.random() * 2.5,
+            alpha: .7,
+            col: beamCols[~~(Math.random() * beamCols.length)]
+          });
+        }
+      }
+
+      function frame(now) {
+        T = now / 1000;
+        cx.clearRect(0, 0, W, H);
+
+        const rect = ufoEl.getBoundingClientRect();
+        const visible = rect.top > -100 && rect.top < H + 100 && rect.left > -100 && rect.left < W + 100;
+
+        if (visible) {
+          const ux = rect.left + rect.width / 2;
+          const uy = rect.top + rect.height / 2;
+
+          // Tractor beam glow
+          const beamAlpha = 0.18 + 0.14 * Math.sin(T * 4);
+          const bGrad = cx.createRadialGradient(ux, uy + 22, 0, ux, uy + 22, 55);
+          bGrad.addColorStop(0, `rgba(0,255,220,${beamAlpha})`);
+          bGrad.addColorStop(.5, `rgba(0,180,255,${beamAlpha * .5})`);
+          bGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          cx.beginPath(); cx.arc(ux, uy + 22, 55, 0, Math.PI * 2); cx.fillStyle = bGrad; cx.fill();
+
+          // Outer halo pulse
+          const hA = 0.12 + 0.10 * Math.sin(T * 2.8);
+          const hGrad = cx.createRadialGradient(ux, uy, 18, ux, uy, 70);
+          hGrad.addColorStop(0, `rgba(0,230,255,${hA})`);
+          hGrad.addColorStop(.5, `rgba(120,80,255,${hA * .55})`);
+          hGrad.addColorStop(1, 'rgba(0,0,0,0)');
+          cx.beginPath(); cx.arc(ux, uy, 70, 0, Math.PI * 2); cx.fillStyle = hGrad; cx.fill();
+
+          // Orbiting light dots
+          const dotCount = 6, dotR = rect.width * .55;
+          for (let i = 0; i < dotCount; i++) {
+            const ang = (i / dotCount) * Math.PI * 2 + T * 1.6;
+            const dx = ux + Math.cos(ang) * dotR;
+            const dy = uy + Math.sin(ang) * dotR * .28 - 4;
+            const dA = 0.45 + 0.55 * Math.abs(Math.sin(T * 3 + i * 1.1));
+            const dCol = i % 2 === 0 ? `rgba(0,255,215,${dA})` : `rgba(190,100,255,${dA})`;
+            cx.beginPath(); cx.arc(dx, dy, 2.5, 0, Math.PI * 2); cx.fillStyle = dCol; cx.fill();
+            const dg = cx.createRadialGradient(dx, dy, 0, dx, dy, 9);
+            dg.addColorStop(0, dCol); dg.addColorStop(1, 'rgba(0,0,0,0)');
+            cx.beginPath(); cx.arc(dx, dy, 9, 0, Math.PI * 2); cx.fillStyle = dg; cx.fill();
+          }
+
+          spawnTrail(ux, uy);
+          spawnBeam(ux, uy);
+        }
+
+        // Draw trail particles
+        particles = particles.filter(p => p.alpha > 0.01 && p.r > 0.2);
+        particles.forEach(p => {
+          p.x += p.vx; p.y += p.vy; p.vy += .05; p.vx *= .97; p.r *= .93; p.alpha -= .02; p.life--;
+          cx.save(); cx.globalAlpha = Math.max(0, p.alpha);
+          const g = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 2.2);
+          g.addColorStop(0, 'rgba(255,255,255,.88)');
+          g.addColorStop(.3, p.col);
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          cx.beginPath(); cx.arc(p.x, p.y, p.r * 2.2, 0, Math.PI * 2); cx.fillStyle = g; cx.fill();
+          cx.restore();
+        });
+
+        // Draw beam particles
+        beamParticles = beamParticles.filter(p => p.alpha > 0.01);
+        beamParticles.forEach(p => {
+          p.y += p.vy; p.r *= .92; p.alpha -= .028;
+          cx.save(); cx.globalAlpha = Math.max(0, p.alpha);
+          const g = cx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+          g.addColorStop(0, p.col + '0.9)');
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          cx.beginPath(); cx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2); cx.fillStyle = g; cx.fill();
+          cx.restore();
+        });
+
+        requestAnimationFrame(frame);
+      }
+      requestAnimationFrame(frame);
+    })();
+  </script>
+</body>
+
+</html>
